@@ -1,0 +1,159 @@
+Measuring urban sustainability through evolutionary paths in socio-environmental structures: Applications to Chinese prefecture cities
+
+Xueliang Zhang1, Yichun Xie2*, Yang Yang1, Zongyao Sha3, Michael Batty4* 
+1 School of Urban and Regional Science, Shanghai University of Finance and Economics, Shanghai, 200433 China
+2 Department of Geography and Geology, Eastern Michigan University, Ypsilanti, MI 48197, USA. 
+3 School of Remote Sensing and Information Engineering, Wuhan University, 129 Luoyu Road, Wuhan 430079, China..
+4 Centre for Advanced Spatial Analysis, University College London, London W1T 4TJ, UK
+* Corresponding authors: yxie@emich.edu m.batty@ucl.ac.uk yxie@emich.edu
+
+//**Data Standardization through Likert-10**//
+clear
+use "C:\Users\yichu\Work\Research\Xie_Publications\PapersFold\ChinaUrbanSustain\Apr_24_2022\2000_2017_Data_Original.dta",replace
+foreach var of varlist gdp wage gdp_p college_p college_t_p college_s_p tele_in_p mobile_p inter_p road_p bus_p taxi_p no_g so_g dust_g crop_g forest_g water_g invg_e_p umg_e_p desg_e_p inva_a_p uma_a_p desa_a_p {
+astile `var'10 = `var',  nq(10)
+}
+foreach var of varlist gdp wage gdp_p college_p college_t_p college_s_p tele_in_p mobile_p inter_p road_p bus_p taxi_p no_g so_g dust_g crop_g forest_g water_g invg_e_p umg_e_p desg_e_p inva_a_p uma_a_p desa_a_p {
+replace `var' = `var'10
+}
+keep id year city gdp wage gdp_p college_p college_t_p college_s_p tele_in_p mobile_p inter_p road_p bus_p taxi_p no_g so_g dust_g crop_g forest_g water_g invg_e_p umg_e_p desg_e_p inva_a_p uma_a_p desa_a_p 
+save "C:\Users\yichu\Work\Research\Xie_Publications\PapersFold\ChinaUrbanSustain\Apr_24_2022\2000_2017_Data_Likert.dta",replace
+
+//** data reliability and validity tests**//
+//** Input Data: "C:\Users\yichu\Work\Research\Xie_Publications\PapersFold\ChinaUrbanSustain\Apr_24_2022\2000_2017_Data_Likert.dta" **//
+
+clear
+use "C:\Users\yichu\Work\Research\Xie_Publications\PapersFold\ChinaUrbanSustain\Apr_24_2022\Xie_Confirm\2000_2017_Data_Likert.dta",replace
+alpha gdp gdp_p wage
+alpha tele_in_p mobile_p inter_p
+alpha road_p bus_p taxi_p
+alpha no_g so_g dust_g
+alpha crop_g forest_g water_g
+alpha college_p college_t_p college_s_p
+alpha crop_g forest_g water_g
+alpha gdp wage gdp_p college_p college_t_p college_s_p tele_in_p mobile_p inter_p road_p bus_p taxi_p no_g so_g dust_g crop_g forest_g water_g invg_e_p umg_e_p desg_e_p inva_a_p uma_a_p desa_a_p
+factor gdp gdp_p wage invg_e_p umg_e_p desg_e_p inva_a_p uma_a_p desa_a_p tele_in_p mobile_p inter_p crop_g forest_g water_g no_g so_g dust_g college_p college_t_p college_s_p road_p bus_p taxi_p , pcf
+estat kmo
+
+//**Second Order Factorial Analysis**//
+clear
+use "C:\Users\yichu\Work\Research\Xie_Publications\PapersFold\ChinaUrbanSustain\Apr_24_2022\Xie_Confirm\2000_2017_Data_Likert.dta"
+sem (SUS -> TRAN, ) (SUS -> CP, ) (SUS -> SOR, ) (SUS -> INFOR, ) (SUS -> EDU, ) (SUS -> PAT, ) (SUS -> ECO, ) (TRAN -> bus_p, ) (TRAN -> taxi_p, ) (TRAN -> road_p, ) (CP -> no_g, ) (CP -> so_g, ) (CP -> dust_g, ) (SOR -> crop_g, ) (SOR -> forest_g, ) (SOR -> water_g, ) (INFOR -> mobile_p, ) (INFOR -> inter_p, ) (INFOR -> tele_in_p, ) (EDU -> college_p, ) (EDU -> college_t_p, ) (EDU -> college_s_p, ) (PAT -> inva_a_p, ) (PAT -> uma_a_p, ) (PAT -> desa_a_p, ) (PAT -> invg_e_p, ) (PAT -> umg_e_p, ) (PAT -> desg_e_p, ) (ECO -> gdp, ) (ECO -> wage, ) (ECO -> gdp_p, ), standardized iterate(100) latent(SUS TRAN CP SOR INFOR EDU PAT ECO ) nocapslatent
+estat gof , stats(all)  //Goodness of fit tests**//
+
+
+//**Obtain SUS Scores and Rank the SUS Scores**//
+//** No cross-lagged effects; All 4 years data were used to computer the sustainabiliyt scores **//
+clear
+use "C:\Users\yichu\Work\Research\Xie_Publications\PapersFold\ChinaUrbanSustain\Apr_24_2022\Xie_Confirm\2000_2017_Data_Likert.dta"
+sem (SUS -> TRAN, ) (SUS -> CP, ) (SUS -> SOR, ) (SUS -> INFOR, ) (SUS -> EDU, ) (SUS -> PAT, ) (SUS -> ECO, ) (TRAN -> bus_p, ) (TRAN -> taxi_p, ) (TRAN -> road_p, ) (CP -> no_g, ) (CP -> so_g, ) (CP -> dust_g, ) (SOR -> crop_g, ) (SOR -> forest_g, ) (SOR -> water_g, ) (INFOR -> mobile_p, ) (INFOR -> inter_p, ) (INFOR -> tele_in_p, ) (EDU -> college_p, ) (EDU -> college_t_p, ) (EDU -> college_s_p, ) (PAT -> inva_a_p, ) (PAT -> uma_a_p, ) (PAT -> desa_a_p, ) (PAT -> invg_e_p, ) (PAT -> umg_e_p, ) (PAT -> desg_e_p, ) (ECO -> gdp, ) (ECO -> wage, ) (ECO -> gdp_p, ), standardized iterate(100) latent(SUS TRAN CP SOR INFOR EDU PAT ECO ) nocapslatent
+predict SUS2, latent(SUS)
+rename SUS2 SUS // the result can be imported into ArcGIS to make maps
+keep if  year==2000|year==2005|year==2010|year==2017
+keep id city year SUS
+sort year SUS
+bys year:gen n=_n
+bys year:gen N=_N
+gen d= N- n+1
+keep if n<21| d<21 //The stata can be imported into excel to make tables and charts
+
+//** Underlying Causal Constructs Analysis **//
+//step1: Compute causal construct scores
+//** No cross-lagged and all 4 years data counted **//
+use "C:\Users\yichu\Work\Research\Xie_Publications\PapersFold\ChinaUrbanSustain\Apr_24_2022\Xie_Confirm\2000_2017_Data_Likert.dta"
+sem (SUS -> TRAN, ) (SUS -> CP, ) (SUS -> SOR, ) (SUS -> INFOR, ) (SUS -> EDU, ) (SUS -> PAT, ) (SUS -> ECO, ) (TRAN -> bus_p, ) (TRAN -> taxi_p, ) (TRAN -> road_p, ) (CP -> no_g, ) (CP -> so_g, ) (CP -> dust_g, ) (SOR -> crop_g, ) (SOR -> forest_g, ) (SOR -> water_g, ) (INFOR -> mobile_p, ) (INFOR -> inter_p, ) (INFOR -> tele_in_p, ) (EDU -> college_p, ) (EDU -> college_t_p, ) (EDU -> college_s_p, ) (PAT -> inva_a_p, ) (PAT -> uma_a_p, ) (PAT -> desa_a_p, ) (PAT -> invg_e_p, ) (PAT -> umg_e_p, ) (PAT -> desg_e_p, ) (ECO -> gdp , ) (ECO -> wage, ) (ECO -> gdp_p, ), standardized iterate(100) latent(SUS TRAN CP SOR INFOR EDU PAT ECO ) nocapslatent
+predict SUS2, latent(SUS)
+sem (TRAN -> bus_p, ) (TRAN -> taxi_p, ) (TRAN -> road_p, ) , standardized latent(TRAN ) nocapslatent
+predict TRAN2, latent(TRAN)
+sem (CP -> no_g, ) (CP -> so_g, ) (CP -> dust_g, ), standardized latent( CP ) nocapslatent
+predict CP2, latent(CP)
+sem (SOR -> crop_g, ) (SOR -> forest_g, ) (SOR -> water_g, ), latent( SOR ) nocapslatent
+predict SOR2, latent(SOR)
+sem (INFOR -> mobile_p, ) (INFOR -> inter_p, ) (INFOR -> tele_in_p, ), standardized latent( INFOR ) nocapslatent
+predict INFOR2, latent(INFOR)
+sem (EDU -> college_p, ) (EDU -> college_t_p, ) (EDU -> college_s_p, ), standardized latent( EDU ) nocapslatent
+predict EDU2, latent(EDU)
+sem (ECO -> gdp , ) (ECO -> wage, ) (ECO -> gdp_p, ), standardized latent( ECO ) nocapslatent
+predict ECO2, latent(ECO)
+rename SUS2 SUS
+rename TRAN2 TRAN
+sem (PAT -> invg_e_p , ) (PAT -> umg_e_p , ) (PAT -> desg_e_p , ) (PAT -> inva_a_p , ) (PAT -> uma_a_p , ) (PAT -> desa_a_p , ), standardized latent( PAT ) nocapslatent
+predict PAT2, latent(PAT)
+rename CP2 CP
+rename SOR2 SOR
+rename INFOR2 INFOR
+rename EDU2 EDU
+rename ECO2 ECO
+rename PAT2 PAT
+keep id city year SUS TRAN CP SOR INFOR EDU ECO PAT
+keep if  year==2000|year==2005|year==2010|year==2017//这一步后将stata数据导入excel进行变量横排
+//Step2: Cross lagged model 1
+sem (cp00 -> sus00, ) (cp00 -> cp05, ) (sor00 -> sus00, ) (sor00 -> sor05, ) (infor00 -> sus00, ) (infor00 -> infor05, ) (edu00 -> sus00, ) (edu00 -> edu05, ) (pat00 -> sus00, ) (pat00 -> pat05, ) (eco00 -> sus00, ) (eco00 -> eco05, ) (sus00 -> sus05, ) (tran00 -> sus00, ) (tran00 -> tran05, ) (tran05 -> tran10, ) (tran05 -> sus05, ) (cp05 -> cp10, ) (cp05 -> sus05, ) (sor05 -> sor10, ) (sor05 -> sus05, ) (infor05 -> infor10, ) (infor05 -> sus05, ) (edu05 -> edu10, ) (edu05 -> sus05, ) (pat05 -> pat10, ) (pat05 -> sus05, ) (eco05 -> eco10, ) (eco05 -> sus05, ) (sus10 -> sus17, ) (tran10 -> sus10, ) (tran10 -> tran17, ) (cp10 -> sus10, ) (cp10 -> cp17, ) (sor10 -> sus10, ) (sor10 -> sor17, ) (infor10 -> sus10, ) (infor10 -> infor17, ) (edu10 -> sus10, ) (edu10 -> edu17, ) (pat10 -> sus10, ) (pat10 -> pat17, ) (eco10 -> sus10, ) (eco10 -> eco17, ) (sus05 -> sus10, ) (tran17 -> sus17, ) (cp17 -> sus17, ) (sor17 -> sus17, ) (infor17 -> sus17, ) (edu17 -> sus17, ) (pat17 -> sus17, ) (eco17 -> sus17, ), standardized iterate(100) nocapslatent
+estat gof , stats(all)
+//step3:Cross lagged model 2
+sem (cp00 -> sus00, ) (cp00 -> sus05, ) (sor00 -> sus00, ) (sor00 -> sus05, ) (infor00 -> sus00, ) (infor00 -> sus05, ) (edu00 -> sus00, ) (edu00 -> sus05, ) (pat00 -> sus00, ) (pat00 -> sus05, ) (eco00 -> sus00, ) (eco00 -> sus05, ) (sus00 -> sus05, ) (tran00 -> sus00, ) (tran00 -> sus05, ) (tran05 -> sus10, ) (tran05 -> sus05, ) (cp05 -> sus10, ) (cp05 -> sus05, ) (sor05 -> sus10, ) (sor05 -> sus05, ) (infor05 -> sus10, ) (infor05 -> sus05, ) (edu05 -> sus10, ) (edu05 -> sus05, ) (pat05 -> sus10, ) (pat05 -> sus05, ) (eco05 -> sus10, ) (eco05 -> sus05, ) (sus10 -> sus17, ) (tran10 -> sus10, ) (tran10 -> sus17, ) (cp10 -> sus10, ) (cp10 -> sus17, ) (sor10 -> sus10, ) (sor10 -> sus17, ) (infor10 -> sus10, ) (infor10 -> sus17, ) (edu10 -> sus10, ) (edu10 -> sus17, ) (pat10 -> sus10, ) (pat10 -> sus17, ) (eco10 -> sus10, ) (eco10 -> sus17, ) (sus05 -> sus10, ) (tran17 -> sus17, ) (cp17 -> sus17, ) (sor17 -> sus17, ) (infor17 -> sus17, ) (edu17 -> sus17, ) (pat17 -> sus17, ) (eco17 -> sus17, ), standardized iterate(100) nocapslatent
+estat gof , stats(all)
+//step4:Cross lagged model 3
+sem (cp00 -> sus00, ) (cp00 -> cp05, ) (cp00 -> sus05, ) (sor00 -> sus00, ) (sor00 -> sor05, ) (sor00 -> sus05, ) (infor00 -> sus00, ) (infor00 -> infor05, ) (infor00 -> sus05, ) (edu00 -> sus00, ) (edu00 -> edu05, ) (edu00 -> sus05, ) (pat00 -> sus00, ) (pat00 -> pat05, ) (pat00 -> sus05, ) (eco00 -> sus00, ) (eco00 -> eco05, ) (eco00 -> sus05, ) (sus00 -> sus05, ) (tran00 -> sus00, ) (tran00 -> tran05, ) (tran00 -> sus05, ) (tran05 -> sus10, ) (tran05 -> tran10, ) (tran05 -> sus05, ) (cp05 -> sus10, ) (cp05 -> cp10, ) (cp05 -> sus05, ) (sor05 -> sus10, ) (sor05 -> sor10, ) (sor05 -> sus05, ) (infor05 -> sus10, ) (infor05 -> infor10, ) (infor05 -> sus05, ) (edu05 -> sus10, ) (edu05 -> edu10, ) (edu05 -> sus05, ) (pat05 -> sus10, ) (pat05 -> pat10, ) (pat05 -> sus05, ) (eco05 -> sus10, ) (eco05 -> eco10, ) (eco05 -> sus05, ) (sus10 -> sus17, ) (tran10 -> sus10, ) (tran10 -> tran17, ) (tran10 -> sus17, ) (cp10 -> sus10, ) (cp10 -> cp17, ) (cp10 -> sus17, ) (sor10 -> sus10, ) (sor10 -> sor17, ) (sor10 -> sus17, ) (infor10 -> sus10, ) (infor10 -> infor17, ) (infor10 -> sus17, ) (edu10 -> sus10, ) (edu10 -> edu17, ) (edu10 -> sus17, ) (pat10 -> sus10, ) (pat10 -> pat17, ) (pat10 -> sus17, ) (eco10 -> sus10, ) (eco10 -> eco17, ) (eco10 -> sus17, ) (sus05 -> sus10, ) (tran17 -> sus17, ) (cp17 -> sus17, ) (sor17 -> sus17, ) (infor17 -> sus17, ) (edu17 -> sus17, ) (pat17 -> sus17, ) (eco17 -> sus17, ), standardized iterate(100) nocapslatent
+estat gof , stats(all)
+
+// Latent variable growth model 1 (the null model): Stata can not analyze the latent variable growth model. Here we use Mplus for the growth model analysis.  Change the data format from Narrow to Wide and import it into SPSS and, then, save as dat format. The Mplus program code is as follows: 
+DATA:
+  FILE IS C:\Users\...\...\...\latent variable growth model_1.dat;
+VARIABLE:
+  NAMES ARE id sus00 tran00 cp00 sor00 infor00 edu00 eco00 pat00 
+  sus05 tran05 cp05 sor05 infor05 edu05 eco05 pat05 sus10 
+  tran10 cp10 sor10 infor10 edu10 eco10 pat10 sus17 tran17 
+  cp17 sor17 infor17 edu17 eco17 pat17;
+
+  USEVAR=sus00 sus05 sus10 sus17;
+
+MODEL:
+I S | sus00@0 sus05@1 sus10@2 sus17@3; 
+
+
+OUTPUT:
+TECH1 STAND;
+
+
+//Latent variable growth model 2 (the null model): Stata can not analyze the latent variable growth model. Here we use Mplus for the growth model analysis.  Change the data format from Narro to Wide and import it into SPSS and, then, save as dat format. The Mplus program code is as follows: 
+DATA:
+  FILE IS C:\Users\...\...\...\latent variable growth model_2.dat;
+VARIABLE:
+  NAMES ARE id sus00 tran00 cp00 sor00 infor00 edu00 eco00 pat00 
+  sus05 tran05 cp05 sor05 infor05 edu05 eco05 pat05 sus10 
+  tran10 cp10 sor10 infor10 edu10 eco10 pat10 sus17 tran17 
+  cp17 sor17 infor17 edu17 eco17 pat17;
+
+  USEVAR=sus00 sus05 sus10 sus17;
+
+MODEL:
+I S | sus00@0 sus05@1 sus10@2 sus17@3; 
+
+
+OUTPUT:
+TECH1 STAND;
+DATA:
+  FILE IS C:\Users\...\...\...\latent variable growth model_1.dat;
+VARIABLE:
+  NAMES ARE id sus00 tran00 cp00 sor00 infor00 edu00 eco00 pat00 
+  sus05 tran05 cp05 sor05 infor05 edu05 eco05 pat05 sus10 
+  tran10 cp10 sor10 infor10 edu10 eco10 pat10 sus17 tran17 
+  cp17 sor17 infor17 edu17 eco17 pat17;
+
+  USEVAR=sus00 tran00 cp00 sor00 infor00 edu00 eco00 pat00
+  sus05 sus10 sus17;
+
+MODEL:
+I S | sus00@0 sus05@1 sus10@2 sus17@3; 
+I S on tran00;
+I S on cp00;
+I S on sor00;
+I S on infor00;
+I S on edu00;
+I S on eco00;
+I S on pat00;
+
+OUTPUT:
+TECH1 STAND;
+
