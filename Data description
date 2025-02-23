@@ -1,1 +1,40 @@
 Data descripption file
+Measuring urban sustainability through the co-evolution of unified socio-environmental structures
+Xueliang Zhang1, Yang Yang1, Yichun Xie2*, Michael Batty3*, Zongyao Sha4
+1 School of Urban and Regional Science, Shanghai University of Finance and Economics, Shanghai, 200433 China
+2 Department of Geography and Geology, Eastern Michigan University, Ypsilanti, MI 48197, USA. 
+3 Centre for Advanced Spatial Analysis, University College London, London W1T 4TJ, UK
+4 School of Remote Sensing and Information Engineering, Wuhan University, 129 Luoyu Road, Wuhan 430079, China.
+* Corresponding authors: yxie@emich.edu, m.batty@ucl.ac.uk
+The paper illustrates how to measure the sustainable urban system characteristics from the case study of Chinese prefecture cities. As of 2015, there were 657 cities in China, including four municipalities directly under the central government, 293 prefecture-level cities, and 360 county-level cities. However, comprehensive fine-scale city statistical data in China are only available at prefecture-level. In addition, there are many autonomous prefectures and leagues in western and northern China. Although they are administratively equivalent to the prefecture-level cities in eastern China, they have low urbanization rates, less developed economies and industries, and sparse population density. They lack statistical data appropriate for measuring urban sustainability. Thus, they are excluded from the case study. As a result, the final dataset includes 278 prefecture-level cities, including 251 in 2000, 267 in 2005, 276 in 2010, and 278 in 2017. The list and explanations of the constructs and measured variables are reported the following table. 
+
+The list and explanations of measured variables*
+Dimension	Variable	Meaning	Calculation method
+ECO	gdp	Gross domestic product	-
+	gdp_p	GDP per capita	GDP/Population
+	wage	Wage	-
+PAT	invg_a_p	Invention patent applications per capita	Invention patent applications/Population
+	umg_a_p	Utility mode patent applications per capita	Utility mode patent applications/Population
+	desg_a_p	Design mode patent applications per capita	Design mode patent applications/Population
+	inva_e_p	Invention patents authorized per capita	Invention patents authorized/Population
+	uma_e_p	Utility mode patents authorized per capita	Utility mode patents authorized/Population
+	desa_e_p	Design mode patents authorized per capita	Design mode patents authorized/Population
+INFOR	tele_in_p	Telecom business volume per capita	Telecom business volume/Population
+	mobile_p	Mobile phone per capita	Mobile phone users/Population
+	inter_p	Internet users per capita	Internet users/Population
+SOR	crop_g	GDP per unit area of crop land	GDP/Area of crop land
+	forest_g	GDP per unit area of forest land	GDP/Area of forest land
+	water_g	GDP per unit area of water land	GDP/Area of water land
+CP	no_g	GDP per unit NOx emission	GDP/NOx emission
+	so_g	GDP per unit sulfur dioxide emission	GDP/Sulfur dioxide emission
+	dust_g	GDP per unit discharge of industrial dusts	GDP/industrial dust discharge
+EDU	college_p	Colleges per capita	Colleges/Population
+	college_t_p	Proportion of college teachers per capita	college teachers/Population
+	college_s_p	Proportion of college students per capita	college students/Population
+TRANS	road_p	Road area per capita	Road areas/Population
+	bus_p	Bus per capita	Buses/Population
+	taxi_p	Taxi per capita	Taxies/Population
+
+* Patent data is mainly derived from the patent cloud website (https://app.patentcloud.com/)., land use data is mainly from the land use database of the Chinese Academy of Sciences (http://www.resdc.cn/data.aspx?DATAID=184), and other data are mainly from the Online China Urban Statistics Yearbook (https://data.cnki.net/yearbook/Single/N2020050229).
+
+
